@@ -1,0 +1,131 @@
+Istio:
+
+Why Istio?
+Before Istio, with Microservices was difficult n dynamic/hardcoded
+	No encryption
+	No failover
+	No retries
+	No intelligent load balancing
+	No routing decision
+	No metrics/logs/traces
+	No access control
+
+
+Solution: Istio
+Apps can communicate with each other, in a form of a Mesh
+
+Benefits:
+	Encryption bw apps
+	retries on connection fail
+	intelligent load balance
+	routing decision
+	metrics/logs
+	access control
+
+
+Istio has 2 Parts
+
+1. Data Plane
+
+	intercepts all inbound (ingress) and outbound (egress) network traffic
+
+	* Service Proxy: (Envoy)
+		The application service calls through the service proxy any time it needs to communicate over the network
+		how does Istio deploy Envoy as a service proxy? deployment technique known as the sidecar
+
+		* Sidecar
+			So here, Envoy Proxy is added as Sidecar in each apps
+			
+			This sidecar is responsible for intercepting all inbound (ingress) and outbound (egress) network traffic from your business logic container
+
+			which means new policies can be applied that reroute the traffic (in or out), perhaps apply policies such as access control lists (ACLs)
+
+			monitoring and tracing data (Mixer)
+
+
+
+2. Control Plane
+
+
+	Pilot, Mixer, and Citadel
+
+
+	1. Pilot
+		The Pilot is responsible for managing sidecars across your Kubernetes
+
+	2. Mixer
+		Mixer maintains usage and access policies
+		capture metrics/logs
+
+	3. Citadel
+		is responsible for certificate signing, certificate issuance, and revocation/rotation
+		Istio issues X.509 certificates to all microservices
+		Allows mutual Transport Layer Security (mTLS)
+		Encrypting all their traffic
+
+
+
+
+2. Policy Checks Telemetry
+	To get insights/metrics/logs
+	Connected to Mixer
+
+3. Pilot
+	To push configuration data to proxies
+
+4. Citadel
+	To provide authentication/certifications
+
+5. Control Plane API
+   All above are managed by control Plane API which allows for central management of Mesh
+
+
+
+
+
+
+Traffic Control
+Sidecar proxies can be configured to route, filter, and augment network traffic
+
+Istio uses DestinationRule and VirtualService resources to describe rules.
+
+DestinationRule: establishes which pods make up a specific subset
+
+VirtualService: allows you to configure a percentage of traffic and direct it to a specific version of the recommendation service.
+
+
+
+
+
+
+Service Resiliency
+
+1. Load balancing
+2. Timeout
+	Wait only N seconds for a response and then give up.
+
+3. Retry
+	If one pod returns an error (e.g., 503), retry for another pod.
+
+4. Circuit breaker
+	Instead of overwhelming the degraded service, open the circuit and reject further requests.
+
+5. Pool ejection
+	provides auto removal of error-prone pods from the load balancing pool
+
+
+
+
+Observability
+
+Tracing
+Metrics
+Service Graph
+
+
+Security
+
+1. mTLS
+	Encryption
+
+2. 
